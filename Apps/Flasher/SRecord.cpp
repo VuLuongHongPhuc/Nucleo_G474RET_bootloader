@@ -232,10 +232,15 @@ uint8_t SRecord::CalculChecksum(const struct SRecordStruct& SRecord)
 }
 
 
-int SRecord::LoadFile(const std::string& filepath)
+int SRecord::LoadFile(const std::wstring& filepath)
 {
+    // Convert wstring to string
+    //std::wstring ws(findFileData.cFileName);
+    std::string filename(filepath.begin(), filepath.end());
+    std::cout << "As std::string: " << filename << std::endl;
+
     // Create an input file stream
-    std::ifstream inputFile(filepath);
+    std::ifstream inputFile(filename);
 
     // Check if the file is open
     if (!inputFile.is_open())
@@ -263,7 +268,7 @@ int SRecord::LoadFile(const std::string& filepath)
         }
         else
         {
-            ExtractLine(line);
+            (void)ExtractLine(line);
 
             int n = line[1] - '0';
             if (n > 9)

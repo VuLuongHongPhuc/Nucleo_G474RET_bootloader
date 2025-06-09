@@ -44,7 +44,7 @@ class SRecord
 public:
 	//SRecord() = default;
 	
-	int LoadFile(const std::string& filepath);
+	int LoadFile(const std::wstring& filepath);
 	std::list<SRecordStruct> GetList() const { return m_SequenceList; }
 	void Flash(SerialCom& serial);
 

@@ -3,7 +3,7 @@
 //#include <conio.h>  // _getch()
 #include <windows.h> // Sleep
 #include <string>
-
+#include <tchar.h>
 
 
 
@@ -15,8 +15,77 @@
 
 #define __TEST_SERIAL__    0
 
+#define EXECUTABLE_FOLDER_W         _T("./mcu_executable_file/")
+#define EXECUTABLE_EXTENSION        _T("./mcu_executable_file/*.srec")
+
+
 int main()
 {    
+
+#ifndef _DEBUG
+    //--- Create folder for executable file ---
+    LPCWSTR folderName = L"mcu_executable_file";
+    DWORD attribs = GetFileAttributesW(folderName);
+    if (attribs != INVALID_FILE_ATTRIBUTES && (attribs & FILE_ATTRIBUTE_DIRECTORY)) 
+    {
+        std::wcout << L"Folder already exists: " << folderName << std::endl;
+    }
+    else 
+    {
+        if (CreateDirectoryW(folderName, NULL)) 
+        {
+            std::wcout << L"Folder created: " << folderName << std::endl;
+        }
+        else 
+        {
+            std::wcerr << L"Failed to create folder. Error: " << GetLastError() << std::endl;
+        }
+    }
+#endif
+
+
+
+    //--- Find executable file ---
+    WIN32_FIND_DATA findFileData;    
+    HANDLE hFind = FindFirstFile(EXECUTABLE_EXTENSION, &findFileData);
+    if (hFind != INVALID_HANDLE_VALUE)
+    {
+        bool found = false;
+
+        do
+        {
+            if (!(findFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+            {
+                std::wcout << findFileData.cFileName << std::endl;
+                found = true;
+                break;
+            }
+        } while (FindNextFile(hFind, &findFileData) != 0);
+        FindClose(hFind);
+
+        if (found)
+        {
+            SRecord file;
+            std::wstring fileName(EXECUTABLE_FOLDER_W);
+            fileName += findFileData.cFileName;
+            if (file.LoadFile(fileName) != -1)
+            {
+                SerialCom serial("ToDoLater");
+                if (serial.Open() == -1)
+                {
+                    std::cout << "ERROR Open COM\n";
+                }
+                else
+                {
+                    file.Flash(serial);
+                }
+            }
+        }
+    }
+    
+
+
+#if 0
     SerialCom serial("ToDoLater");
     if (serial.Open() == -1)
     {
@@ -27,11 +96,12 @@ int main()
         //TODO: find file with extension .srec
 
         SRecord file;
-        if (file.LoadFile("power_manager.srec") != -1)
+        if (file.LoadFile("./mcu_executable_file/power_manager.srec") != -1)
         {
             file.Flash(serial);
         }
     }
+#endif
 
 #if __TEST_SERIAL__
     uint8_t RxBuf[8];
