@@ -202,6 +202,9 @@ static void Jump2APP(void)
 	pFunction Jump_To_Application;
 
 	// TODO: DeInitialize
+	//HAL_DeInit();
+	//HAL_UART_MspDeInit(&hlpuart1);
+	//HAL_RCC_DeInit();
 
 
 	//jump to the application

@@ -1,0 +1,4 @@
+../Project/com_task.c:199:13:Jump2APP	1
+../Project/com_task.c:38:6:COM_Initialize	1
+../Project/com_task.c:45:6:COM_Task	14
+../Project/com_task.c:220:6:COM_BT_JumpToApp	1

@@ -1,0 +1,4 @@
+../Project/com_task.c:199:13:Jump2APP	0	static,ignoring_inline_asm
+../Project/com_task.c:38:6:COM_Initialize	0	static
+../Project/com_task.c:45:6:COM_Task	16	static
+../Project/com_task.c:220:6:COM_BT_JumpToApp	0	static

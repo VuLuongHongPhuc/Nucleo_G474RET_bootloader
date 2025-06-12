@@ -1,0 +1,5 @@
+../Project/flash.c:35:6:FLASH_M_Initialize	0	static
+../Project/flash.c:172:6:FLASH_M_ErasePage	40	static
+../Project/flash.c:190:6:FLASH_M_Write	16	static
+../Project/flash.c:268:6:FLASH_M_Read	8	static
+../Project/flash.c:290:6:FLASH_ReadTest	0	static
